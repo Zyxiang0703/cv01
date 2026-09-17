@@ -4,7 +4,7 @@
 
 ## 在线预览
 
-👉 **[点击访问：zyxiang0703.github.io](https://zyxiang0703.github.io/)**&#8203;
+👉 **[点击访问：zyxiang0703.github.io](https://zyxiang0703.github.io/cv01/)**&#8203;
 
 ## 关于我
 
