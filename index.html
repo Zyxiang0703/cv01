@@ -3,185 +3,192 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>《YIXIANG》— 张宜翔的个人杂志</title>
+<title>张宜翔 YIXIANG — 个人简历</title>
 <style>
   :root{
     --pink:#d16a8a; --pink-deep:#b34a6e; --pink-soft:#fdeef4;
-    --paper:#fffdfb; --ink:#33272d; --muted:#9a8590; --line:#ecd9e1;
+    --ink:#33272d; --muted:#9a8590; --line:#ecd9e1;
     --serif:"Noto Serif SC","Songti SC","STSong",serif;
     --sans:"PingFang SC","Segoe UI","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --ease:cubic-bezier(.22,.8,.24,1);
   }
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{background:#efe6ea;color:var(--ink);font-family:var(--sans);line-height:1.75;}
-  /* ============ 舞台：所有页面叠放，翻页切换 ============ */
-  .stage{max-width:960px;margin:0 auto;padding:34px 18px 60px;perspective:1200px;}
-  .page{display:none;background:var(--paper);border-radius:6px;
-    box-shadow:0 20px 50px rgba(179,74,110,.18);min-height:78vh;overflow:hidden;position:relative;}
-  .page.show{display:block;animation:turn .5s ease;}
-  @keyframes turn{from{opacity:0;transform:rotateY(-8deg) translateX(40px);}to{opacity:1;transform:none;}}
+  html,body{height:100%;overflow:hidden;}
+  body{background:#1c1216;color:var(--ink);font-family:var(--sans);line-height:1.75;}
+
+  /* ============ 舞台：整屏场景叠放 ============ */
+  .scenes{position:relative;height:100%;width:100%;}
+  .scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    opacity:0;visibility:hidden;transform:translateY(6vh);
+    transition:opacity .8s var(--ease),transform .8s var(--ease),visibility 0s .8s;}
+  .scene.active{opacity:1;visibility:visible;transform:none;transition-delay:0s,0s,0s;z-index:2;}
+  .scene.leaving{opacity:0;transform:translateY(-6vh);z-index:1;}
+  .inner{width:min(1080px,92vw);max-height:88vh;overflow-y:auto;overscroll-behavior:contain;
+    padding:24px 10px;scrollbar-width:thin;scrollbar-color:var(--pink) transparent;}
+  .inner::-webkit-scrollbar{width:5px;}
+  .inner::-webkit-scrollbar-thumb{background:var(--pink);border-radius:99px;}
+
+  /* 子元素错落入场 */
+  .scene .rv{opacity:0;transform:translateY(34px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+  .scene.active .rv{opacity:1;transform:none;}
+  .scene.active .rv:nth-child(1),.scene.active .st1{transition-delay:.12s;}
+  .scene.active .rv:nth-child(2),.scene.active .st2{transition-delay:.24s;}
+  .scene.active .rv:nth-child(3),.scene.active .st3{transition-delay:.36s;}
+  .scene.active .rv:nth-child(4),.scene.active .st4{transition-delay:.48s;}
+  .scene.active .rv:nth-child(5),.scene.active .st5{transition-delay:.60s;}
+  .scene.active .rv:nth-child(6),.scene.active .st6{transition-delay:.72s;}
+  .scene.active .card{transition-delay:.34s;}
+  .scene.active .card+.card{transition-delay:.44s;}
+  .scene.active .card+.card+.card{transition-delay:.54s;}
+  .scene.active .card+.card+.card+.card{transition-delay:.64s;}
+
+  /* ============ 巨大编号水印 ============ */
+  .bgnum{position:absolute;right:-1vw;top:50%;transform:translateY(-50%);
+    font-family:var(--serif);font-size:clamp(200px,34vw,520px);font-weight:700;
+    color:rgba(209,106,138,.08);line-height:1;pointer-events:none;user-select:none;}
+
   /* ============ 封面 ============ */
-  .cover{background:var(--pink);color:#fff;display:flex;flex-direction:column;
-    justify-content:space-between;padding:46px 52px;min-height:78vh;}
-  .cover .issue{display:flex;justify-content:space-between;font-size:12px;letter-spacing:3px;opacity:.9;}
-  .cover h1{font-family:var(--serif);font-size:clamp(58px,10vw,104px);line-height:1.04;letter-spacing:2px;}
-  .cover h1 span{display:block;}
-  .cover .sub{margin-top:14px;font-size:15px;letter-spacing:6px;opacity:.92;}
-  .cover .cover-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;}
-  .cover .desc{max-width:280px;font-size:13.5px;line-height:1.9;opacity:.95;}
-  .cover-img{width:200px;height:260px;object-fit:cover;border:6px solid #fff;
-    box-shadow:0 12px 30px rgba(51,39,45,.3);transform:rotate(2.5deg);}
-  .open-btn{display:inline-block;margin-top:22px;background:#fff;color:var(--pink-deep);
-    border:none;font-family:var(--sans);font-size:15px;font-weight:600;letter-spacing:4px;
-    padding:13px 34px;border-radius:999px;cursor:pointer;transition:transform .2s,box-shadow .2s;}
-  .open-btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(51,39,45,.25);}
-  /* ============ 内页公共 ============ */
-  .inner{padding:34px 52px 56px;}
-  .masthead{display:flex;justify-content:space-between;align-items:center;
-    border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:8px;}
-  .masthead .logo{font-family:var(--serif);font-weight:700;letter-spacing:2px;font-size:15px;}
-  .masthead .meta{font-size:11px;letter-spacing:3px;color:var(--muted);}
-  .crumb{font-size:11px;letter-spacing:2px;color:var(--muted);margin:14px 0 4px;}
-  .inner h2{font-family:var(--serif);font-size:34px;margin-bottom:6px;}
-  .inner .lede{color:var(--muted);font-size:13.5px;margin-bottom:28px;}
-  .dropcap::first-letter{font-family:var(--serif);font-size:44px;color:var(--pink);
-    float:left;line-height:1;padding:4px 8px 0 0;font-weight:700;}
-  /* ============ 目录页 ============ */
-  .toc h2{font-family:var(--serif);font-size:40px;margin:26px 0 4px;}
-  .toc .lede{margin-bottom:30px;}
-  .toc-item{display:flex;align-items:baseline;gap:18px;padding:20px 6px;
-    border-bottom:1px solid var(--line);cursor:pointer;transition:background .2s,padding-left .2s;}
-  .toc-item:hover{background:var(--pink-soft);padding-left:16px;}
-  .toc-item .no{font-family:var(--serif);font-size:15px;color:var(--pink);width:34px;}
-  .toc-item .name{font-family:var(--serif);font-size:21px;font-weight:700;flex:1;}
-  .toc-item .en{font-size:11px;letter-spacing:3px;color:var(--muted);}
-  .toc-item .pg{font-family:var(--serif);font-size:14px;color:var(--muted);}
-  /* ============ 文章页内容 ============ */
-  .article-card{border-left:3px solid var(--pink);background:#fff;
-    padding:18px 22px;margin:0 0 18px;box-shadow:0 3px 10px rgba(51,39,45,.05);}
-  .article-card .title{font-weight:700;font-size:16.5px;}
-  .article-card .muted{color:var(--muted);font-size:12.5px;margin:2px 0 8px;}
-  .article-card ul{padding-left:18px;font-size:14.5px;}
-  .article-card li{margin-bottom:7px;}
-  .tags{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px;}
-  .tags span{background:var(--pink-soft);color:var(--pink-deep);
-    padding:5px 14px;border-radius:999px;font-size:12.5px;}
-  .pull-quote{font-family:var(--serif);font-size:20px;line-height:1.9;color:var(--pink-deep);
-    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-    padding:22px 8px;margin:26px 0;text-align:center;}
-  /* ============ 翻页 ============ */
-  .pager{display:flex;justify-content:space-between;align-items:center;
-    margin-top:30px;padding-top:18px;border-top:1px solid var(--line);}
-  .pager button{background:none;border:1px solid var(--ink);color:var(--ink);
-    font-family:var(--sans);font-size:13px;letter-spacing:2px;padding:9px 22px;
-    border-radius:999px;cursor:pointer;transition:all .2s;}
-  .pager button:hover{background:var(--pink);border-color:var(--pink);color:#fff;}
-  .pager .pgnow{font-family:var(--serif);font-size:13px;color:var(--muted);letter-spacing:2px;}
-  .home-link{font-size:12px;letter-spacing:2px;color:var(--muted);cursor:pointer;}
-  .home-link:hover{color:var(--pink);}
+  #s1 .inner{display:flex;align-items:center;gap:6vw;max-height:90vh;overflow:visible;}
+  .cover-left{flex:1;}
+  .kicker{font-size:12px;letter-spacing:6px;color:var(--pink);margin-bottom:18px;}
+  .cover-left h1{font-family:var(--serif);font-size:clamp(56px,8.5vw,110px);line-height:1.05;color:#fff;}
+  .cover-left h1 em{font-style:normal;color:var(--pink);}
+  .subline{margin-top:16px;color:rgba(255,255,255,.75);letter-spacing:4px;font-size:14px;}
+  .desc{margin-top:22px;color:rgba(255,255,255,.6);font-size:13.5px;max-width:400px;line-height:1.9;}
+  .cover-img{width:clamp(180px,22vw,280px);aspect-ratio:3/4;object-fit:cover;
+    border:6px solid var(--pink);box-shadow:0 24px 60px rgba(209,106,138,.35);flex-shrink:0;}
+  .scroll-hint{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);
+    color:rgba(255,255,255,.55);font-size:11px;letter-spacing:3px;display:flex;
+    flex-direction:column;align-items:center;gap:8px;pointer-events:none;}
+  .scroll-hint::after{content:"";width:1px;height:36px;background:linear-gradient(var(--pink),transparent);
+    animation:drip 1.6s infinite var(--ease);}
+  @keyframes drip{from{transform:scaleY(0);transform-origin:top;}50%{transform:scaleY(1);transform-origin:top;}51%{transform-origin:bottom;}to{transform:scaleY(0);transform-origin:bottom;}}
+
+  /* ============ 内容页 ============ */
+  .crumb{font-size:12px;letter-spacing:5px;color:var(--pink);margin-bottom:10px;}
+  h2{font-family:var(--serif);font-size:clamp(30px,4.5vw,52px);color:#fff;margin-bottom:4px;}
+  .lede{color:var(--muted);font-size:14px;margin-bottom:26px;}
+  .card{background:#fff;border-left:3px solid var(--pink);padding:18px 24px;margin-bottom:16px;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);}
+  .card .title{font-weight:700;font-size:16.5px;}
+  .card .muted{color:var(--muted);font-size:12.5px;margin:2px 0 8px;}
+  .card ul{padding-left:18px;font-size:14px;}
+  .card li{margin-bottom:6px;}
+  .tags{display:flex;flex-wrap:wrap;gap:9px;margin-top:8px;}
+  .tags span{background:var(--pink-soft);color:var(--pink-deep);padding:5px 15px;
+    border-radius:999px;font-size:12.5px;border:1px solid var(--line);transition:all .25s;cursor:default;}
+  .tags span:hover{background:var(--pink);color:#fff;border-color:var(--pink);transform:translateY(-2px);}
+  .pull-quote{font-family:var(--serif);font-size:clamp(17px,2vw,22px);color:var(--pink);
+    border-top:1px solid rgba(255,255,255,.12);border-bottom:1px solid rgba(255,255,255,.12);
+    padding:20px 8px;margin:22px 0;text-align:center;}
+  .contact b{color:var(--pink);}
+
+  /* ============ 右侧进度导航 ============ */
+  .progress{position:fixed;right:26px;top:50%;transform:translateY(-50%);
+    display:flex;flex-direction:column;gap:16px;z-index:10;}
+  .dot{width:10px;height:10px;border-radius:50%;border:1.5px solid rgba(255,255,255,.35);
+    cursor:pointer;transition:all .35s var(--ease);position:relative;}
+  .dot.on{background:var(--pink);border-color:var(--pink);transform:scale(1.35);
+    box-shadow:0 0 0 5px rgba(209,106,138,.18);}
+  .dot:hover{border-color:var(--pink);}
+  .counter{position:fixed;right:24px;bottom:22px;z-index:10;font-family:var(--serif);
+    color:rgba(255,255,255,.5);font-size:13px;letter-spacing:2px;}
+  .counter b{color:var(--pink);font-size:20px;}
+  .brand{position:fixed;left:28px;top:22px;z-index:10;font-family:var(--serif);
+    letter-spacing:3px;font-size:14px;color:rgba(255,255,255,.65);}
+  .brand b{color:var(--pink);}
+
+  /* 移动端 */
   @media (max-width:760px){
-    .stage{padding:16px 8px 46px;}
-    .cover{padding:34px 26px;}
-    .cover-img{width:140px;height:185px;}
-    .inner{padding:26px 24px 44px;}
-    .inner h2{font-size:27px;}
-    .toc-item .en{display:none;}
+    #s1 .inner{flex-direction:column;justify-content:center;gap:26px;text-align:center;padding-top:60px;}
+    .desc{margin:14px auto 0;}
+    .cover-img{width:150px;}
+    .progress{right:12px;}
+    .counter,.brand{display:none;}
+    .inner{max-height:calc(100vh - 40px);}
+    .bgnum{font-size:60vw;}
   }
+  /* 打印：全部展开 */
   @media print{
-    body{background:#fff;}
-    .stage{padding:0;max-width:100%;}
-    .page{display:block !important;box-shadow:none;border-radius:0;min-height:auto;page-break-after:always;animation:none;}
-    .pager,.open-btn,.home-link,.crumb{display:none !important;}
-    .cover{min-height:90vh;}
+    html,body{overflow:visible;height:auto;background:#fff;}
+    .scenes{height:auto;}
+    .scene{position:static;opacity:1 !important;visibility:visible !important;transform:none !important;
+      page-break-after:always;min-height:90vh;}
+    .scene .rv{opacity:1 !important;transform:none !important;}
+    .progress,.counter,.brand,.scroll-hint{display:none !important;}
+    h2,.cover-left h1{color:var(--ink) !important;}
+    .bgnum{display:none;}
   }
 </style>
 </head>
 <body>
-<div class="stage">
 
-  <!-- ========== P1 封面 ========== -->
-  <div class="page cover show" id="p-cover">
-    <div class="issue"><span>VOL.01 · 创刊号</span><span>2026 · 香港</span></div>
-    <div>
-      <h1><span>YI XIANG</span><span>张宜翔</span></h1>
-      <div class="sub">融合媒体及科技传播 · 个人杂志</div>
-      <button class="open-btn" onclick="go('toc')">翻开杂志 →</button>
-    </div>
-    <div class="cover-bottom">
-      <div class="desc">活动策划 / 新媒体运营 / 视频剪辑与后期 / UX 内容创作 —— 在艺术、传播与科技之间，持续寻找新的表达方式。</div>
-      <img class="cover-img" src="photo.jpg" alt="张宜翔">
-    </div>
-  </div>
+<div class="brand">YI<b>·</b>XIANG <span style="opacity:.5;font-size:11px;">个人简历 2026</span></div>
 
-  <!-- ========== P2 目录 ========== -->
-  <div class="page toc" id="p-toc">
+<div class="scenes">
+
+  <!-- ========== SCENE 1 封面 ========== -->
+  <section class="scene active" id="s1">
+    <div class="bgnum">01</div>
     <div class="inner">
-      <div class="masthead"><span class="logo">YIXIANG</span><span class="meta">CONTENTS · 目录</span></div>
-      <h2>本期目录</h2>
-      <div class="lede">点击任意篇目，开始阅读这本关于我的杂志。</div>
-
-      <div class="toc-item" onclick="go('p-edu')">
-        <span class="no">01</span><span class="name">教育背景</span>
-        <span class="en">EDUCATION</span><span class="pg">P.03</span>
+      <div class="cover-left">
+        <div class="kicker rv">融合媒体及科技传播 · 中国香港</div>
+        <h1 class="rv">张宜翔<br><em>YI XIANG</em></h1>
+        <div class="subline rv">活动策划 / 新媒体运营 / 视频剪辑 / UX 内容创作</div>
+        <p class="desc rv">在艺术、传播与科技之间，持续寻找新的表达方式——把内容做出来，再让它被看见。</p>
       </div>
-      <div class="toc-item" onclick="go('p-work')">
-        <span class="no">02</span><span class="name">实习经历</span>
-        <span class="en">INTERNSHIP</span><span class="pg">P.04</span>
-      </div>
-      <div class="toc-item" onclick="go('p-skill')">
-        <span class="no">03</span><span class="name">技能与活动</span>
-        <span class="en">SKILLS &amp; LIFE</span><span class="pg">P.05</span>
-      </div>
+      <img class="cover-img rv st5" src="photo.jpg" alt="张宜翔">
     </div>
-  </div>
+    <div class="scroll-hint">SCROLL 向下滚动</div>
+  </section>
 
-  <!-- ========== P3 教育 ========== -->
-  <div class="page" id="p-edu">
+  <!-- ========== SCENE 2 教育背景 ========== -->
+  <section class="scene" id="s2">
+    <div class="bgnum">02</div>
     <div class="inner">
-      <div class="masthead"><span class="logo">YIXIANG</span><span class="meta">CHAPTER 01 · EDUCATION</span></div>
-      <span class="home-link" onclick="go('toc')">← 返回目录</span>
-      <div class="crumb">01 · 教育背景</div>
-      <h2>香港恒生大学</h2>
-      <div class="lede">融合媒体及科技传播 · 2020.08 – 2024.12 · 中国香港</div>
-      <p class="dropcap">课程涵盖多媒体制作、新媒体运营、传播技术与内容创作等方向。三年全英文学习经历，让我习惯在不同语言与文化之间切换视角：既能做扎实的调研与写作，也能上手剪辑与视觉表达。</p>
-      <p style="margin-top:14px;font-size:14.5px;">在校期间担任 HSUHK CSSA（内地学生会）宣传部部长，从 0 到 1 策划多场大型活动的传播方案——这段经历让我确定：我喜欢"把内容做出来，再让它被看见"的全过程。</p>
-      <div class="pull-quote">"把内容做出来，再让它被看见。"</div>
-      <div class="pager">
-        <span class="pgnow">P.03</span>
-        <button onclick="go('p-work')">下一篇：实习经历 →</button>
+      <div class="crumb rv">CHAPTER 01 · EDUCATION</div>
+      <h2 class="rv">香港恒生大学</h2>
+      <div class="lede rv">融合媒体及科技传播 · 2020.08 – 2024.12 · 中国香港</div>
+      <div class="card rv">
+        <p>课程涵盖多媒体制作、新媒体运营、传播技术与内容创作等方向。三年全英文学习经历，让我习惯在不同语言与文化之间切换视角：既能做扎实的调研与写作，也能上手剪辑与视觉表达。</p>
       </div>
+      <div class="card rv">
+        <div class="title">HSUHK CSSA（内地学生会）— 宣传部部长</div>
+        <p style="font-size:14px;">从 0 到 1 策划多场大型活动的传播方案，确定了我喜欢"把内容做出来，再让它被看见"的全过程。</p>
+      </div>
+      <div class="pull-quote rv">"把内容做出来，再让它被看见。"</div>
     </div>
-  </div>
+  </section>
 
-  <!-- ========== P4 实习 ========== -->
-  <div class="page" id="p-work">
+  <!-- ========== SCENE 3 实习经历 ========== -->
+  <section class="scene" id="s3">
+    <div class="bgnum">03</div>
     <div class="inner">
-      <div class="masthead"><span class="logo">YIXIANG</span><span class="meta">CHAPTER 02 · INTERNSHIP</span></div>
-      <span class="home-link" onclick="go('toc')">← 返回目录</span>
-      <div class="crumb">02 · 实习经历</div>
-      <h2>四段实习，四种现场</h2>
-      <div class="lede">从财经新闻到品牌活动，从环保公益到内容策划。</div>
+      <div class="crumb rv">CHAPTER 02 · INTERNSHIP</div>
+      <h2 class="rv">四段实习，四种现场</h2>
+      <div class="lede rv">从财经新闻到品牌活动，从环保公益到内容策划。</div>
 
-      <div class="article-card">
+      <div class="card rv">
         <div class="title">新浪金融（线上）香港站 — 实习记者</div>
         <div class="muted">中国香港 · 2026.01 – 2026.05</div>
         <ul>
-          <li><b>财经内容：</b>了解香港资本市场基本概念（股票、数字资产、房地产、消费等），协助完成财经话题内容工作：选题调研、资料整理及采访稿撰写。</li>
+          <li><b>财经内容：</b>了解香港资本市场基本概念（股票、数字资产、房地产、消费等），协助完成选题调研、资料整理及采访稿撰写。</li>
           <li><b>新闻报道：</b>定期撰写文章，报道香港重大财经事件及国际金融市场对香港的影响。</li>
           <li><b>视频制作：</b>使用 CapCut 等工具完成长短视频剪辑、字幕与包装优化，满足节目标准与社媒传播需求。</li>
         </ul>
       </div>
 
-      <div class="article-card">
+      <div class="card">
         <div class="title">咪咕星空 — 咨询岗位实习生</div>
         <div class="muted">中国 · 2023.06 – 2023.08</div>
         <ul>
-          <li><b>活动策划：</b>参与"咪咕新年 与球星合作"电话彩铃项目，策划"mimo"与 NBA 球星交互动作，产出 3 个典型方案，以"篮球魔术"创意完成详细策划。</li>
+          <li><b>活动策划：</b>参与"咪咕新年 与球星合作"电话彩铃项目，策划"mimo"与 NBA 球星交互动作，产出 3 个典型方案。</li>
           <li><b>视频剪辑：</b>负责后期编辑（剪映），完成 3+ 个视频剪辑，获经理好评。</li>
           <li><b>图像编辑：</b>使用 Photoshop 完成 30+ 张图片修改。</li>
         </ul>
       </div>
 
-      <div class="article-card">
+      <div class="card">
         <div class="title">华润麦当劳 — 品牌形象大使</div>
         <div class="muted">中国 · 2022.06 – 2022.08</div>
         <ul>
@@ -190,7 +197,7 @@
         </ul>
       </div>
 
-      <div class="article-card">
+      <div class="card">
         <div class="title">厦门陆海环保 — 实习助手</div>
         <div class="muted">中国 · 2021.04 – 2021.08</div>
         <ul>
@@ -199,25 +206,18 @@
           <li><b>数据处理：</b>使用 Excel 完成数据可视化呈现，获得认可。</li>
         </ul>
       </div>
-
-      <div class="pager">
-        <button onclick="go('p-edu')">← 上一篇：教育背景</button>
-        <span class="pgnow">P.04</span>
-        <button onclick="go('p-skill')">下一篇：技能与活动 →</button>
-      </div>
     </div>
-  </div>
+  </section>
 
-  <!-- ========== P5 技能 ========== -->
-  <div class="page" id="p-skill">
+  <!-- ========== SCENE 4 技能与联系 ========== -->
+  <section class="scene" id="s4">
+    <div class="bgnum">04</div>
     <div class="inner">
-      <div class="masthead"><span class="logo">YIXIANG</span><span class="meta">CHAPTER 03 · SKILLS &amp; LIFE</span></div>
-      <span class="home-link" onclick="go('toc')">← 返回目录</span>
-      <div class="crumb">03 · 技能与活动</div>
-      <h2>我的工具箱与现场</h2>
-      <div class="lede">技能不是清单，是被项目验证过的能力。</div>
+      <div class="crumb rv">CHAPTER 03 · SKILLS &amp; CONTACT</div>
+      <h2 class="rv">技能与联系方式</h2>
+      <div class="lede rv">技能不是清单，是被项目验证过的能力。</div>
 
-      <div class="article-card">
+      <div class="card rv">
         <div class="title">技能标签</div>
         <div class="tags">
           <span>剪映</span><span>Premiere</span><span>Photoshop</span><span>CapCut</span>
@@ -226,48 +226,98 @@
         </div>
       </div>
 
-      <div class="article-card">
-        <div class="title">HSUHK CSSA（内地学生会）— 宣传部部长</div>
-        <div class="muted">中国香港 · 2019.09 – 2020.02</div>
+      <div class="card rv">
+        <div class="title">校园活动</div>
         <ul>
           <li>协同策划年兽活动、新春游园夜市、春节联欢晚会等大型活动，负责前期策划与后期复盘。</li>
           <li>负责小红书、抖音、微信公众号的内容编辑、视频剪辑与审核。</li>
         </ul>
       </div>
 
-      <div class="article-card">
-        <div class="title">求职意向 &amp; 补充</div>
+      <div class="card contact rv">
+        <div class="title">求职意向 &amp; 联系方式</div>
         <ul>
           <li>方向：<b>活动策划 / 新媒体运营 / 视频剪辑与后期 / UX 内容创作</b></li>
-          <li>邮箱：<b>zyxiang0703@gmail.com</b> · GitHub：github.com/Zyxiang0703</li>
+          <li>邮箱：<b>zyxiang0703@gmail.com</b></li>
+          <li>GitHub：<b>github.com/Zyxiang0703</b></li>
           <li>可附加作品集链接（视频 / 设计 / 公众号）</li>
         </ul>
       </div>
-
-      <div class="pager">
-        <button onclick="go('p-work')">← 上一篇：实习经历</button>
-        <span class="pgnow">P.05 · 完</span>
-        <button onclick="go('toc')">回到目录 ↑</button>
-      </div>
+      <div class="pull-quote rv">THANKS FOR SCROLLING · 期待与你共事</div>
     </div>
-  </div>
+  </section>
 
 </div>
 
+<!-- 右侧进度导航 -->
+<nav class="progress" id="progress"></nav>
+<div class="counter"><b id="cur">01</b> / 04</div>
+
 <script>
-  function go(id){
-    const target = id === 'toc' ? 'p-toc' : id;
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('show'));
-    const t=document.getElementById(target);
-    if(t){t.classList.add('show');window.scrollTo({top:0,behavior:'smooth'});}
+  const scenes=[...document.querySelectorAll('.scene')];
+  const names=['封面','教育背景','实习经历','技能与联系'];
+  let cur=0,locked=false;
+  const LOCK=950; // 换幕动画期间的锁，防止连滚跳页
+
+  // 生成右侧圆点
+  const nav=document.getElementById('progress');
+  scenes.forEach((s,i)=>{
+    const d=document.createElement('div');
+    d.className='dot'+(i===0?' on':'');
+    d.title=names[i];
+    d.onclick=()=>go(i);
+    nav.appendChild(d);
+  });
+  const dots=[...nav.children];
+
+  function go(n){
+    n=Math.max(0,Math.min(scenes.length-1,n));
+    if(n===cur||locked)return;
+    locked=true;
+    const oldS=scenes[cur],newS=scenes[n];
+    oldS.classList.remove('active');oldS.classList.add('leaving');
+    newS.classList.add('active');
+    setTimeout(()=>oldS.classList.remove('leaving'),800);
+    dots.forEach((d,i)=>d.classList.toggle('on',i===n));
+    document.getElementById('cur').textContent=String(n+1).padStart(2,'0');
+    cur=n;
+    setTimeout(()=>locked=false,LOCK);
   }
-  const order=['p-edu','p-work','p-skill'];
+
+  // 关键：滚轮驱动换幕。若当前场景内容可滚动且未到边缘，先滚内容
+  function innerOf(i){return scenes[i].querySelector('.inner');}
+  window.addEventListener('wheel',e=>{
+    if(locked)return;
+    const box=innerOf(cur);
+    if(box && box.scrollHeight>box.clientHeight+4){
+      const atTop=box.scrollTop<=0, atBottom=box.scrollTop+box.clientHeight>=box.scrollHeight-2;
+      if((e.deltaY>0&&!atBottom)||(e.deltaY<0&&!atTop))return; // 交给内容滚动
+    }
+    if(Math.abs(e.deltaY)<25)return; // 过滤轻微滚动
+    go(cur+(e.deltaY>0?1:-1));
+  },{passive:true});
+
+  // 触屏滑动
+  let ty=null;
+  window.addEventListener('touchstart',e=>{ty=e.touches[0].clientY;},{passive:true});
+  window.addEventListener('touchend',e=>{
+    if(ty===null||locked)return;
+    const dy=ty-e.changedTouches[0].clientY;
+    if(Math.abs(dy)<60)return;
+    const box=innerOf(cur);
+    if(box && box.scrollHeight>box.clientHeight+4){
+      const atTop=box.scrollTop<=0, atBottom=box.scrollTop+box.clientHeight>=box.scrollHeight-2;
+      if((dy>0&&!atBottom)||(dy<0&&!atTop))return;
+    }
+    go(cur+(dy>0?1:-1));ty=null;
+  },{passive:true});
+
+  // 键盘
   document.addEventListener('keydown',e=>{
-    const now=document.querySelector('.page.show');
-    if(!now)return;
-    const i=order.indexOf(now.id);
-    if(e.key==='ArrowRight'&&i>-1&&i<order.length-1)go(order[i+1]);
-    if(e.key==='ArrowLeft'&&i>0)go(order[i-1]);
+    if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(cur+1);}
+    if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(cur-1);}
+    if(e.key==='Home')go(0);
+    if(e.key==='End')go(scenes.length-1);
   });
 </script>
 </body>
