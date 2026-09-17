@@ -23,3 +23,4 @@
 - 纯 HTML + CSS，无框架依赖
 - GitHub Actions 自动部署到 GitHub Pages
 - 由 GitHub Copilot 辅助生成，人工审核修改
+update
