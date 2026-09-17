@@ -1,233 +1,274 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>张宜翔 — 在线简历</title>
-  <meta name="description" content="张宜翔 - 融合媒体及科技传播 | 在线简历" />
-  <style>
-    :root{
-      --bg:#f6f8fb;
-      --card:#ffffff;
-      --accent:#0b66c3;
-      --muted:#6b7280;
-      --maxw:920px;
-      --radius:12px;
-      --text:#0d1721;
-      font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    }
-    *{box-sizing:border-box}
-    body{background:linear-gradient(180deg,#eef4ff 0%,var(--bg) 40%); margin:20px; display:flex; justify-content:center; color:var(--text);}
-    .container{width:100%; max-width:var(--maxw); background:var(--card); border-radius:var(--radius); box-shadow:0 8px 24px rgba(12,30,60,0.08); overflow:hidden;}
-    header{display:flex; gap:20px; align-items:center; padding:28px;}
-    .avatar{width:96px;height:96px;border-radius:14px;background:linear-gradient(135deg,var(--accent),#6aa7ff); display:flex;align-items:center;justify-content:center;color:#fff;font-size:36px;font-weight:700;}
-    .head-info h1{margin:0;font-size:24px;}
-    .head-info p{margin:6px 0 0;color:var(--muted);}
-    .wrap{display:flex; gap:24px; padding:20px 28px 36px;}
-    main{flex:1;}
-    aside{width:280px;}
-    section{background:transparent; margin-bottom:18px;}
-    h2{font-size:16px;margin:0 0 10px;color:var(--accent);}
-    .card{background:#fbfdff;border-radius:10px;padding:14px; box-shadow:inset 0 1px 0 rgba(255,255,255,0.6);}
-    .item{margin-bottom:12px;}
-    .item .title{font-weight:600;}
-    .muted{color:var(--muted); font-size:13px;}
-    ul{margin:8px 0 0 18px; padding:0;}
-    li{margin-bottom:6px; line-height:1.45;}
-    .controls{display:flex; gap:8px; margin-left:auto;}
-    .btn{background:var(--accent); color:#fff; padding:8px 12px; border-radius:8px; border:none; cursor:pointer; font-size:13px;}
-    .btn.ghost{background:#eef4ff;color:var(--accent); border:1px solid rgba(11,102,195,0.12);}
-    .meta-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px;}
-    .small{font-size:13px; color:var(--muted)}
-    footer{padding:16px 28px; text-align:center; color:var(--muted); font-size:13px; background:linear-gradient(180deg,transparent,rgba(0,0,0,0.01));}
-    /* responsive */
-    @media (max-width:920px){
-      .wrap{flex-direction:column;}
-      aside{width:100%;}
-      header{flex-direction:column;align-items:flex-start;gap:12px;}
-      .controls{margin-top:8px; width:100%}
-      .controls .btn{flex:1}
-    }
-    /* dark theme */
-    .dark body, .dark .container { }
-    .dark .container{background:#0f1720; color:#e6eef8;}
-    .dark .card{background:#0b1220; box-shadow:none;}
-    .dark h2{color:#76b7ff}
-    .dark .avatar{background:linear-gradient(135deg,#2b7bd6,#6aa7ff)}
-    .dark .muted{color:#9fb4d4}
-    .dark .btn.ghost{background:transparent;color:#76b7ff;border:1px solid rgba(118,183,255,0.12)}
-    /* print */
-    @media print {
-      body{background:#fff; margin:0}
-      .controls, footer {display:none;}
-      .container{box-shadow:none; border-radius:0; width:100%}
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>《YIXIANG》— 张宜翔的个人杂志</title>
+<style>
+  :root{
+    --pink:#d16a8a; --pink-deep:#b34a6e; --pink-soft:#fdeef4;
+    --paper:#fffdfb; --ink:#33272d; --muted:#9a8590; --line:#ecd9e1;
+    --serif:"Noto Serif SC","Songti SC","STSong",serif;
+    --sans:"PingFang SC","Segoe UI","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#efe6ea;color:var(--ink);font-family:var(--sans);line-height:1.75;}
+  /* ============ 舞台：所有页面叠放，翻页切换 ============ */
+  .stage{max-width:960px;margin:0 auto;padding:34px 18px 60px;perspective:1200px;}
+  .page{display:none;background:var(--paper);border-radius:6px;
+    box-shadow:0 20px 50px rgba(179,74,110,.18);min-height:78vh;overflow:hidden;position:relative;}
+  .page.show{display:block;animation:turn .5s ease;}
+  @keyframes turn{from{opacity:0;transform:rotateY(-8deg) translateX(40px);}to{opacity:1;transform:none;}}
+  /* ============ 封面 ============ */
+  .cover{background:var(--pink);color:#fff;display:flex;flex-direction:column;
+    justify-content:space-between;padding:46px 52px;min-height:78vh;}
+  .cover .issue{display:flex;justify-content:space-between;font-size:12px;letter-spacing:3px;opacity:.9;}
+  .cover h1{font-family:var(--serif);font-size:clamp(58px,10vw,104px);line-height:1.04;letter-spacing:2px;}
+  .cover h1 span{display:block;}
+  .cover .sub{margin-top:14px;font-size:15px;letter-spacing:6px;opacity:.92;}
+  .cover .cover-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+  .cover .desc{max-width:280px;font-size:13.5px;line-height:1.9;opacity:.95;}
+  .cover-img{width:200px;height:260px;object-fit:cover;border:6px solid #fff;
+    box-shadow:0 12px 30px rgba(51,39,45,.3);transform:rotate(2.5deg);}
+  .open-btn{display:inline-block;margin-top:22px;background:#fff;color:var(--pink-deep);
+    border:none;font-family:var(--sans);font-size:15px;font-weight:600;letter-spacing:4px;
+    padding:13px 34px;border-radius:999px;cursor:pointer;transition:transform .2s,box-shadow .2s;}
+  .open-btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(51,39,45,.25);}
+  /* ============ 内页公共 ============ */
+  .inner{padding:34px 52px 56px;}
+  .masthead{display:flex;justify-content:space-between;align-items:center;
+    border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:8px;}
+  .masthead .logo{font-family:var(--serif);font-weight:700;letter-spacing:2px;font-size:15px;}
+  .masthead .meta{font-size:11px;letter-spacing:3px;color:var(--muted);}
+  .crumb{font-size:11px;letter-spacing:2px;color:var(--muted);margin:14px 0 4px;}
+  .inner h2{font-family:var(--serif);font-size:34px;margin-bottom:6px;}
+  .inner .lede{color:var(--muted);font-size:13.5px;margin-bottom:28px;}
+  .dropcap::first-letter{font-family:var(--serif);font-size:44px;color:var(--pink);
+    float:left;line-height:1;padding:4px 8px 0 0;font-weight:700;}
+  /* ============ 目录页 ============ */
+  .toc h2{font-family:var(--serif);font-size:40px;margin:26px 0 4px;}
+  .toc .lede{margin-bottom:30px;}
+  .toc-item{display:flex;align-items:baseline;gap:18px;padding:20px 6px;
+    border-bottom:1px solid var(--line);cursor:pointer;transition:background .2s,padding-left .2s;}
+  .toc-item:hover{background:var(--pink-soft);padding-left:16px;}
+  .toc-item .no{font-family:var(--serif);font-size:15px;color:var(--pink);width:34px;}
+  .toc-item .name{font-family:var(--serif);font-size:21px;font-weight:700;flex:1;}
+  .toc-item .en{font-size:11px;letter-spacing:3px;color:var(--muted);}
+  .toc-item .pg{font-family:var(--serif);font-size:14px;color:var(--muted);}
+  /* ============ 文章页内容 ============ */
+  .article-card{border-left:3px solid var(--pink);background:#fff;
+    padding:18px 22px;margin:0 0 18px;box-shadow:0 3px 10px rgba(51,39,45,.05);}
+  .article-card .title{font-weight:700;font-size:16.5px;}
+  .article-card .muted{color:var(--muted);font-size:12.5px;margin:2px 0 8px;}
+  .article-card ul{padding-left:18px;font-size:14.5px;}
+  .article-card li{margin-bottom:7px;}
+  .tags{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px;}
+  .tags span{background:var(--pink-soft);color:var(--pink-deep);
+    padding:5px 14px;border-radius:999px;font-size:12.5px;}
+  .pull-quote{font-family:var(--serif);font-size:20px;line-height:1.9;color:var(--pink-deep);
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:22px 8px;margin:26px 0;text-align:center;}
+  /* ============ 翻页 ============ */
+  .pager{display:flex;justify-content:space-between;align-items:center;
+    margin-top:30px;padding-top:18px;border-top:1px solid var(--line);}
+  .pager button{background:none;border:1px solid var(--ink);color:var(--ink);
+    font-family:var(--sans);font-size:13px;letter-spacing:2px;padding:9px 22px;
+    border-radius:999px;cursor:pointer;transition:all .2s;}
+  .pager button:hover{background:var(--pink);border-color:var(--pink);color:#fff;}
+  .pager .pgnow{font-family:var(--serif);font-size:13px;color:var(--muted);letter-spacing:2px;}
+  .home-link{font-size:12px;letter-spacing:2px;color:var(--muted);cursor:pointer;}
+  .home-link:hover{color:var(--pink);}
+  @media (max-width:760px){
+    .stage{padding:16px 8px 46px;}
+    .cover{padding:34px 26px;}
+    .cover-img{width:140px;height:185px;}
+    .inner{padding:26px 24px 44px;}
+    .inner h2{font-size:27px;}
+    .toc-item .en{display:none;}
+  }
+  @media print{
+    body{background:#fff;}
+    .stage{padding:0;max-width:100%;}
+    .page{display:block !important;box-shadow:none;border-radius:0;min-height:auto;page-break-after:always;animation:none;}
+    .pager,.open-btn,.home-link,.crumb{display:none !important;}
+    .cover{min-height:90vh;}
+  }
+</style>
 </head>
 <body>
-  <div class="container" id="page">
-    <header>
-      <div class="avatar" aria-hidden="true">张</div>
-      <div class="head-info">
-        <h1>张宜翔</h1>
-        <p class="muted">融合媒体及科技传播 · Hong Kong · 2020.08 – 2024.12</p>
-        <p class="muted" style="margin-top:6px">邮箱：<a href="mailto:zyxiang0703@gmail.com">zyxiang0703@gmail.com</a></p>
-      </div>
-      <div class="controls" role="region" aria-label="页面操作">
-        <button class="btn" onclick="window.print()">打印 / 保存为 PDF</button>
-        <button id="themeToggle" class="btn ghost" title="切换主题">切换主题</button>
-      </div>
-    </header>
+<div class="stage">
 
-    <div class="wrap">
-      <main>
-        <section>
-          <h2>教育背景</h2>
-          <div class="card">
-            <div class="item">
-              <div class="title">香港恒生大学 — 融合媒体及科技传播</div>
-              <div class="muted">中国香港 · 2020.08 – 2024.12</div>
-              <p class="small" style="margin-top:8px">课程涵盖多媒体制作、新媒体运营、传播技术与内容创作等。</p>
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <h2>实习经历</h2>
-          <div class="card">
-            <div class="item">
-              <div class="title">咪咕星空 — 咨询岗位实习生</div>
-              <div class="muted">中国 · 2023.06 – 2023.08</div>
-              <ul>
-                <li><strong>活动策划：</strong>参与“咪咕新年 与球星合作”电话彩铃项目，负责策划“mimo”与NBA球星交互动作，产出3个典型方案，最终以“篮球魔术”创意完成详细策划。</li>
-                <li><strong>视频剪辑：</strong>负责视频后期编辑（剪映），制作特效并完成素材衔接，实习期间完成 3+ 个视频剪辑，获得经理好评。</li>
-                <li><strong>图像编辑：</strong>使用 Photoshop 完成 30+ 张图片修改，并结合“mimo”在不同场景的设计与用户交互实现。</li>
-              </ul>
-            </div>
-
-            <div class="item" style="margin-top:12px;">
-              <div class="title">华润麦当劳 — 品牌形象大使</div>
-              <div class="muted">中国 · 2022.06 – 2022.08</div>
-              <ul>
-                <li><strong>线下 Campaign：</strong>参与咔滋咔滋脆鸡堡新品发布会，负责活动创意贡献、现场秩序维护与礼品分发。</li>
-                <li><strong>品牌大使：</strong>扮演吉祥物与顾客沟通，介绍品牌并成功销售 1000+ oh麦卡。</li>
-              </ul>
-            </div>
-
-            <div class="item" style="margin-top:12px;">
-              <div class="title">厦门陆海环保 — 实习助手</div>
-              <div class="muted">中国 · 2021.04 – 2021.08</div>
-              <ul>
-                <li><strong>线下 Campaign：</strong>参与社区垃圾分类宣传，协助开展线下活动并负责活动拍摄。</li>
-                <li><strong>新媒体运营：</strong>撰写与排版公众号推文，协助环保文案创作。</li>
-                <li><strong>数据处理：</strong>负责数据的收集与整理，使用 Excel 完成数据可视化呈现，获得领导认可。</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <h2>项目经历（可补充）</h2>
-          <div class="card">
-            <div class="item">
-              <div class="small">此处可添加你参与的项目、链接或作品集（视频、设计稿、公众号文章等）。如果需要，我可以帮你把作品集链接加入页面并整理展示样式。</div>
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <h2>兴趣与技能</h2>
-          <div class="card">
-            <div class="item">
-              <ul>
-                <li><strong>语言能力：</strong>英语可作为工作语言；3 年全英文学习经验。</li>
-                <li><strong>计算机与工具：</strong>熟练使用 MS Office，精通 Excel、PowerPoint；熟练使用 Premiere (Pr)、Photoshop、剪映 等多媒体工具。</li>
-                <li><strong>其他技能：</strong>活动策划、视频与图像后期、公众号与社媒运营、数据整理与可视化。</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-      </main>
-
-      <aside>
-        <section>
-          <h2>联系方式</h2>
-          <div class="card">
-            <p class="muted">邮箱</p>
-            <div style="font-weight:600;"><a href="mailto:zyxiang0703@gmail.com">zyxiang0703@gmail.com</a></div>
-
-            <p class="muted" style="margin-top:10px">居住地</p>
-            <div style="font-weight:600;">中国 / 香港（可根据需要调整）</div>
-
-            <p class="muted" style="margin-top:10px">GitHub</p>
-            <div style="font-weight:600;"><a href="https://github.com/Zyxiang0703" target="_blank" rel="noopener">github.com/Zyxiang0703</a></div>
-          </div>
-        </section>
-
-        <section>
-          <h2>求职意向</h2>
-          <div class="card">
-            <div class="muted">希望方向</div>
-            <div style="margin-top:6px">活动策划 / 新媒体运营 / 视频剪辑与后期 / 内容创作（UX 内容）</div>
-          </div>
-        </section>
-
-        <section>
-          <h2>社团与课外</h2>
-          <div class="card">
-            <div class="item">
-              <div class="title">HSUHK CSSA（内地学生会） — 宣传部部长</div>
-              <div class="muted">中国·香港 · 2019.09 – 2020.02</div>
-              <ul>
-                <li>协同策划大型活动：年兽活动、新春游园夜市、春节联欢晚会等，负责活动前期策划与后期复盘。</li>
-                <li>新媒体运营：负责小红书、抖音、微信公众号的内容编辑、视频剪辑与审核。</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <h2>证书 & 补充</h2>
-          <div class="card">
-            <ul>
-              <li>可添加 HSK 成绩、课程证书或线上课程链接</li>
-              <li>可附加作品集链接（视频/设计/公众号）并展示示例缩略图</li>
-            </ul>
-          </div>
-        </section>
-      </aside>
+  <!-- ========== P1 封面 ========== -->
+  <div class="page cover show" id="p-cover">
+    <div class="issue"><span>VOL.01 · 创刊号</span><span>2026 · 香港</span></div>
+    <div>
+      <h1><span>YI XIANG</span><span>张宜翔</span></h1>
+      <div class="sub">融合媒体及科技传播 · 个人杂志</div>
+      <button class="open-btn" onclick="go('toc')">翻开杂志 →</button>
     </div>
-
-    <footer>
-      已根据你提供的信息生成简历模板 — 保存为 index.html 后即可在线分享或部署到 GitHub Pages。需要我替你把此文件推到仓库并启用 GitHub Pages 吗？
-    </footer>
+    <div class="cover-bottom">
+      <div class="desc">活动策划 / 新媒体运营 / 视频剪辑与后期 / UX 内容创作 —— 在艺术、传播与科技之间，持续寻找新的表达方式。</div>
+      <img class="cover-img" src="photo.jpg" alt="张宜翔">
+    </div>
   </div>
 
-  <script>
-    // 主题切换（本地存储）
-    (function(){
-      const root = document.getElementById('page');
-      const toggle = document.getElementById('themeToggle');
-      const bodyEl = document.documentElement;
-      function setDark(dark){
-        if(dark){
-          bodyEl.classList.add('dark-mode');
-          document.body.classList.add('dark');
-        } else {
-          document.body.classList.remove('dark');
-        }
-        localStorage.setItem('resume-dark', dark ? '1' : '0');
-      }
-      // 初始状态：若之前保存为暗色，则应用
-      const saved = localStorage.getItem('resume-dark');
-      if(saved === '1') setDark(true);
-      // 绑定切换
-      toggle.addEventListener('click', () => {
-        const isDark = document.body.classList.contains('dark');
-        setDark(!isDark);
-      });
-    })();
-  </script>
+  <!-- ========== P2 目录 ========== -->
+  <div class="page toc" id="p-toc">
+    <div class="inner">
+      <div class="masthead"><span class="logo">YIXIANG</span><span class="meta">CONTENTS · 目录</span></div>
+      <h2>本期目录</h2>
+      <div class="lede">点击任意篇目，开始阅读这本关于我的杂志。</div>
+
+      <div class="toc-item" onclick="go('p-edu')">
+        <span class="no">01</span><span class="name">教育背景</span>
+        <span class="en">EDUCATION</span><span class="pg">P.03</span>
+      </div>
+      <div class="toc-item" onclick="go('p-work')">
+        <span class="no">02</span><span class="name">实习经历</span>
+        <span class="en">INTERNSHIP</span><span class="pg">P.04</span>
+      </div>
+      <div class="toc-item" onclick="go('p-skill')">
+        <span class="no">03</span><span class="name">技能与活动</span>
+        <span class="en">SKILLS &amp; LIFE</span><span class="pg">P.05</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== P3 教育 ========== -->
+  <div class="page" id="p-edu">
+    <div class="inner">
+      <div class="masthead"><span class="logo">YIXIANG</span><span class="meta">CHAPTER 01 · EDUCATION</span></div>
+      <span class="home-link" onclick="go('toc')">← 返回目录</span>
+      <div class="crumb">01 · 教育背景</div>
+      <h2>香港恒生大学</h2>
+      <div class="lede">融合媒体及科技传播 · 2020.08 – 2024.12 · 中国香港</div>
+      <p class="dropcap">课程涵盖多媒体制作、新媒体运营、传播技术与内容创作等方向。三年全英文学习经历，让我习惯在不同语言与文化之间切换视角：既能做扎实的调研与写作，也能上手剪辑与视觉表达。</p>
+      <p style="margin-top:14px;font-size:14.5px;">在校期间担任 HSUHK CSSA（内地学生会）宣传部部长，从 0 到 1 策划多场大型活动的传播方案——这段经历让我确定：我喜欢"把内容做出来，再让它被看见"的全过程。</p>
+      <div class="pull-quote">"把内容做出来，再让它被看见。"</div>
+      <div class="pager">
+        <span class="pgnow">P.03</span>
+        <button onclick="go('p-work')">下一篇：实习经历 →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== P4 实习 ========== -->
+  <div class="page" id="p-work">
+    <div class="inner">
+      <div class="masthead"><span class="logo">YIXIANG</span><span class="meta">CHAPTER 02 · INTERNSHIP</span></div>
+      <span class="home-link" onclick="go('toc')">← 返回目录</span>
+      <div class="crumb">02 · 实习经历</div>
+      <h2>四段实习，四种现场</h2>
+      <div class="lede">从财经新闻到品牌活动，从环保公益到内容策划。</div>
+
+      <div class="article-card">
+        <div class="title">新浪金融（线上）香港站 — 实习记者</div>
+        <div class="muted">中国香港 · 2026.01 – 2026.05</div>
+        <ul>
+          <li><b>财经内容：</b>了解香港资本市场基本概念（股票、数字资产、房地产、消费等），协助完成财经话题内容工作：选题调研、资料整理及采访稿撰写。</li>
+          <li><b>新闻报道：</b>定期撰写文章，报道香港重大财经事件及国际金融市场对香港的影响。</li>
+          <li><b>视频制作：</b>使用 CapCut 等工具完成长短视频剪辑、字幕与包装优化，满足节目标准与社媒传播需求。</li>
+        </ul>
+      </div>
+
+      <div class="article-card">
+        <div class="title">咪咕星空 — 咨询岗位实习生</div>
+        <div class="muted">中国 · 2023.06 – 2023.08</div>
+        <ul>
+          <li><b>活动策划：</b>参与"咪咕新年 与球星合作"电话彩铃项目，策划"mimo"与 NBA 球星交互动作，产出 3 个典型方案，以"篮球魔术"创意完成详细策划。</li>
+          <li><b>视频剪辑：</b>负责后期编辑（剪映），完成 3+ 个视频剪辑，获经理好评。</li>
+          <li><b>图像编辑：</b>使用 Photoshop 完成 30+ 张图片修改。</li>
+        </ul>
+      </div>
+
+      <div class="article-card">
+        <div class="title">华润麦当劳 — 品牌形象大使</div>
+        <div class="muted">中国 · 2022.06 – 2022.08</div>
+        <ul>
+          <li><b>线下 Campaign：</b>参与咔滋咔滋脆鸡堡新品发布会，负责创意贡献、现场秩序与礼品分发。</li>
+          <li><b>品牌大使：</b>扮演吉祥物与顾客沟通，成功销售 1000+ oh麦卡。</li>
+        </ul>
+      </div>
+
+      <div class="article-card">
+        <div class="title">厦门陆海环保 — 实习助手</div>
+        <div class="muted">中国 · 2021.04 – 2021.08</div>
+        <ul>
+          <li><b>线下 Campaign：</b>参与社区垃圾分类宣传，负责活动拍摄。</li>
+          <li><b>新媒体运营：</b>撰写并排版公众号推文，协助环保文案创作。</li>
+          <li><b>数据处理：</b>使用 Excel 完成数据可视化呈现，获得认可。</li>
+        </ul>
+      </div>
+
+      <div class="pager">
+        <button onclick="go('p-edu')">← 上一篇：教育背景</button>
+        <span class="pgnow">P.04</span>
+        <button onclick="go('p-skill')">下一篇：技能与活动 →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== P5 技能 ========== -->
+  <div class="page" id="p-skill">
+    <div class="inner">
+      <div class="masthead"><span class="logo">YIXIANG</span><span class="meta">CHAPTER 03 · SKILLS &amp; LIFE</span></div>
+      <span class="home-link" onclick="go('toc')">← 返回目录</span>
+      <div class="crumb">03 · 技能与活动</div>
+      <h2>我的工具箱与现场</h2>
+      <div class="lede">技能不是清单，是被项目验证过的能力。</div>
+
+      <div class="article-card">
+        <div class="title">技能标签</div>
+        <div class="tags">
+          <span>剪映</span><span>Premiere</span><span>Photoshop</span><span>CapCut</span>
+          <span>Excel 数据可视化</span><span>PowerPoint</span><span>公众号运营</span>
+          <span>活动策划</span><span>采访撰稿</span><span>英语工作语言</span>
+        </div>
+      </div>
+
+      <div class="article-card">
+        <div class="title">HSUHK CSSA（内地学生会）— 宣传部部长</div>
+        <div class="muted">中国香港 · 2019.09 – 2020.02</div>
+        <ul>
+          <li>协同策划年兽活动、新春游园夜市、春节联欢晚会等大型活动，负责前期策划与后期复盘。</li>
+          <li>负责小红书、抖音、微信公众号的内容编辑、视频剪辑与审核。</li>
+        </ul>
+      </div>
+
+      <div class="article-card">
+        <div class="title">求职意向 &amp; 补充</div>
+        <ul>
+          <li>方向：<b>活动策划 / 新媒体运营 / 视频剪辑与后期 / UX 内容创作</b></li>
+          <li>邮箱：<b>zyxiang0703@gmail.com</b> · GitHub：github.com/Zyxiang0703</li>
+          <li>可附加作品集链接（视频 / 设计 / 公众号）</li>
+        </ul>
+      </div>
+
+      <div class="pager">
+        <button onclick="go('p-work')">← 上一篇：实习经历</button>
+        <span class="pgnow">P.05 · 完</span>
+        <button onclick="go('toc')">回到目录 ↑</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function go(id){
+    const target = id === 'toc' ? 'p-toc' : id;
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('show'));
+    const t=document.getElementById(target);
+    if(t){t.classList.add('show');window.scrollTo({top:0,behavior:'smooth'});}
+  }
+  const order=['p-edu','p-work','p-skill'];
+  document.addEventListener('keydown',e=>{
+    const now=document.querySelector('.page.show');
+    if(!now)return;
+    const i=order.indexOf(now.id);
+    if(e.key==='ArrowRight'&&i>-1&&i<order.length-1)go(order[i+1]);
+    if(e.key==='ArrowLeft'&&i>0)go(order[i-1]);
+  });
+</script>
 </body>
 </html>
